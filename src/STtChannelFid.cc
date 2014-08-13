@@ -40,7 +40,8 @@ STtChannelFid::STtChannelFid(const edm::ParameterSet& iConfig)
 
 {
    //now do what ever initialization is needed
-   nevttau=0;
+   nevttau=0; // tau events counter
+   nEvents=0;  // all events counter
 
 }
 
@@ -50,7 +51,6 @@ STtChannelFid::~STtChannelFid()
  
    // do anything here that needs to be done at desctruction time
    // (e.g. close files, deallocate resources etc.)
-
 }
 
 
@@ -75,8 +75,9 @@ STtChannelFid::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-STtChannelFid::endJob() 
+STtChannelFid::endJob()
 {
+   std::cout << "Analysis complete. (" << nevttau << ") " << nEvents << " (tau) events have been analyzed.\n";
 }
 
 // ------------ method called when starting to processes a run  ------------

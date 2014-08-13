@@ -49,6 +49,7 @@ class STtChannelFid : public edm::EDAnalyzer {
       virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       size_t nevttau;
+      size_t nEvents;
       // ----------member data ---------------------------
 };
 
