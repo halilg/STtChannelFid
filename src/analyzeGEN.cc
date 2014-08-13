@@ -28,8 +28,6 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
     iEvent.getByLabel("source", lhes);   
     iEvent.getByLabel("genParticles", genParticles);
     iEvent.getByLabel("ak5GenJets", genJets);
-
-    book_histograms(iEvent, iSetup);
     //size_t nparticles=genParticles->size();
     size_t ngenjets=genJets->size();
     //size_t ngenjconst=genJetConstituents.size();
@@ -122,6 +120,10 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
                             cout << "!found neutrino\n";
                             final_state[WNU]=final_state[TOPWL]->daughter(j);
                             printCandidate(*final_state[WNU]);
+                        } else if ( (idg == 13 || idg == 15) ){ // tau event
+                            cout << "tau event, skipping\n";
+                             ++nevttau;
+                            return;
                         }
                     }
                 }
@@ -164,26 +166,13 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
             && final_state[TOPB]!=NULL && final_state[TOPWF] !=NULL
             && final_state[WNU] !=NULL && final_state[WL] !=NULL );
     
-    if (abs(final_state[WL]->pdgId()) == 15){ // tau decay
-        ++nevttau;
-        return;
-    }
     assert(abs(final_state[WL]->pdgId()) == 11 || abs(final_state[WL]->pdgId()) == 13 ); // lepton (e/mu) check
     assert(abs(final_state[WNU]->pdgId()) == 12 || abs(final_state[WNU]->pdgId()) == 14 ); // lepton (nue/numu) check
     cout << fabs(getMass2(final_state[WNU], final_state[WL]) - final_state[TOPWF]->mass()*final_state[TOPWF]->mass()) << endl;
-    assert( fabs(getMass2(final_state[WNU], final_state[WL]) - final_state[TOPWF]->mass()*final_state[TOPWF]->mass()) < 0.2); // W mass check
-    cout << fabs(getMass2(final_state[TOPWF], final_state[TOPB]) - final_state[HSTOPF]->mass()*final_state[HSTOPF]->mass()) << endl;
-    assert( fabs(getMass2(final_state[TOPWF], final_state[TOPB]) - final_state[HSTOPF]->mass()*final_state[HSTOPF]->mass()) < 0.2); // top mass check
-    /*assert();
-    assert();
-    assert();
-    assert();*/
-    //size_t n = hstop->numberOfDaughters();
-    //cout << "daughters of top: " << n << endl;
-    //for(size_t j = 0; j < n; ++ j) {
-    //    const reco::Candidate * d = hstop->daughter( j );
-    //    int dauId = d->pdgId();
-    //}
+    assert( fabs(getMass2(final_state[WNU], final_state[WL]) - final_state[TOPWL]->mass()*final_state[TOPWL]->mass()) < 0.5); // W mass check
+    cout << fabs(getMass2(final_state[TOPWF], final_state[TOPB]) - final_state[HSTOPL]->mass()*final_state[HSTOPL]->mass()) << endl;
+    assert( fabs(getMass2(final_state[TOPWF], final_state[TOPB]) - final_state[HSTOPL]->mass()*final_state[HSTOPL]->mass()) < 0.5); // top mass check
+
     histosF["TopPT"]->Fill(0.0, weightsign);
     histosF["TopETA"]->Fill(0.0, weightsign);
     histosF["BbarPT"]->Fill(0.0, weightsign);

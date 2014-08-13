@@ -7,11 +7,10 @@ process = cms.Process("SingleTopAnalysis")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.TFileService = cms.Service("TFileService", 
       fileName = cms.string("histos.root"),
-      closeFileFast = cms.untracked.bool(True)
 )
 
 process.source = cms.Source("PoolSource",
@@ -21,8 +20,7 @@ process.source = cms.Source("PoolSource",
     )
 )
 
-process.SingleTopAnalysis = cms.EDAnalyzer('STtChannelFid'
-)
+process.SingleTopAnalysis = cms.EDAnalyzer('STtChannelFid')
 
 
 process.p = cms.Path(process.SingleTopAnalysis)

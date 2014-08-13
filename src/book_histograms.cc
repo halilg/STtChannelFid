@@ -1,6 +1,6 @@
 #include "TopPhysics/STtChannelFid/interface/STtChannelFid.h"
 
-void STtChannelFid::book_histograms(const edm::Event& iEvent, const edm::EventSetup& iSetup){
+void STtChannelFid::book_histograms(){
     edm::Service<TFileService> fs;
     //histosD["pt"] = fs->make<TH1D>( "pt"  , "p_{t}", 100,  0., 100. );
     histosF["TopPT"] = fs->make<TH1F>("TopPT","TOP Pt;P\\_{t} (GeV);Events/2GeV",150,0,300) ;

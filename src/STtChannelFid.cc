@@ -70,6 +70,7 @@ STtChannelFid::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 void 
 STtChannelFid::beginJob()
 {
+   book_histograms();
 }
 
 // ------------ method called once each job just after ending the event loop  ------------

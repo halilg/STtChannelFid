@@ -41,7 +41,7 @@ class STtChannelFid : public edm::EDAnalyzer {
       virtual void analyzeGEN(const edm::Event&, const edm::EventSetup& );
       //const reco::Candidate * getFinalState(const edm::Event& , const edm::EventSetup&);
       double getMass2(const reco::Candidate * , const reco::Candidate *);
-      void book_histograms(const edm::Event&, const edm::EventSetup& );
+      void book_histograms();
       virtual void endJob() ;
 
       virtual void beginRun(edm::Run const&, edm::EventSetup const&);
