@@ -39,7 +39,8 @@ process.out = cms.OutputModule("PoolOutputModule",
                         'keep *_photons_*_*',
                         'keep *_pfMet_*_*',
                         'keep *_generator_*_*',
-                        'keep *_globalMuons_*_*'
+                        'keep *_globalMuons_*_*',
+                        'keep LHEEventProduct_*_*_LHE'
 
 		)			
 )
