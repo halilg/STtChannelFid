@@ -13,6 +13,9 @@
 #include "TH1.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/JetReco/interface/GenJetCollection.h"
+#include "DataFormats/METReco/interface/GenMET.h"
+#include "DataFormats/METReco/interface/GenMETCollection.h"
+//#include "DataFormats/METReco/interface/METCollection.h"
 #include "SimDataFormats/GeneratorProducts/interface/LHEEventProduct.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -50,6 +53,10 @@ class STtChannelFid : public edm::EDAnalyzer {
       virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
       size_t nevttau;
       size_t nEvents;
+      size_t nFiducial;
+      size_t nWevttau; 
+      size_t nWEvents;
+      size_t nWFiducial;
       // ----------member data ---------------------------
 };
 

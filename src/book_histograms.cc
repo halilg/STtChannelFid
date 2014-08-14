@@ -25,6 +25,8 @@ void STtChannelFid::book_histograms(){
     histosF["WRm"] = fs->make<TH1F>("WRm","Reconstructed W Mass ; Mass (GeV);Events/0.5GeV",160,40,120);
     histosF["rWm"] = fs->make<TH1F>("rWm","Reconstructed W Mass ; Mass (GeV);Events/0.5GeV",160,40,120);
     histosF["Wm"] = fs->make<TH1F>("Wm","Real W Mass; Mass (GeV);Events/0.5GeV",160,40,120);
+    histosF["genMetTrue"] = fs->make<TH1F>("genMetTrue","Missing ET (GEN);E\\_{t}MISS (GeV);Events/2GeV",100,0,200) ;
+    
     histosF["wldeltaeta"] = fs->make<TH1F>("wldeltaeta","W-lepton Delta Eta; Delta Eta (rad);Events",50,0,5);
     histosF["wldeltaphi"] = fs->make<TH1F>("wldeltaphi","W-lepton Delta Phi; Delta Phi (rad);Events",50,0,5);
     histosF["bbartdeltaeta"] = fs->make<TH1F>("bbartdeltaeta","BBar-Top Delta Eta; Delta Eta (rad);Events",50,0,5);

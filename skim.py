@@ -2,7 +2,8 @@ import FWCore.ParameterSet.Config as cms
 
 dpath="/tmp/halil/"
 ifname="007E248B-54F2-E311-A601-848F69FD4586.root"
-ofname="skim_007E248B-54F2-E311-A601-848F69FD4586.root"
+ifname="0062D09E-79F2-E311-B681-7845C4FC39DA.root"
+ofname="skim_"+ifname
 
 #set up a process , for e.g. RECO in this case
 processName = "SKIM"
@@ -32,7 +33,7 @@ process.out = cms.OutputModule("PoolOutputModule",
                         'keep *_*_*_HLT',
 			'keep *_genParticles_*_*',
                         'keep *_ak5GenJets_*_*', 
-                        'keep *_genMetCalo_*_*',
+                        'keep *_genMetTrue_*_*',
                         'keep *_ak5PFJets_*_*',
                         'keep *_electrons_*_*',     
              		'keep *_muons_*_HLT',

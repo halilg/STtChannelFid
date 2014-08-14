@@ -42,6 +42,10 @@ STtChannelFid::STtChannelFid(const edm::ParameterSet& iConfig)
    //now do what ever initialization is needed
    nevttau=0; // tau events counter
    nEvents=0;  // all events counter
+   nFiducial=0; // number of events in the fiducial volume
+   nWevttau=0; // weighted event counters
+   nWEvents=0;
+   nWFiducial=0;
 
 }
 
@@ -77,7 +81,16 @@ STtChannelFid::beginJob()
 void 
 STtChannelFid::endJob()
 {
-   std::cout << "Analysis complete. (" << nevttau << ") " << nEvents << " (tau) events have been analyzed.\n";
+   float bremu=0.2132;
+   std::cout << "Analysis complete.\n\n"
+             << "Received a total of " << nEvents << " events, "
+             << nevttau << " of which were tau lepton events.\n"
+             << nFiducial << " events were in the fiducial volume.\n\n"
+             << "Received a total of " << nWEvents << " weighted events, "
+             << nWevttau << " of which were tau lepton events.\n"
+             << nWFiducial << " events were in the fiducial volume.\n"
+             << "Therefore for the e/mu branching ratio of " << bremu
+             << ":\nepsilon=" << bremu * float(nWFiducial) / float(nWEvents-nWevttau) << std::endl;
 }
 
 // ------------ method called when starting to processes a run  ------------
