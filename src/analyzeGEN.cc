@@ -10,7 +10,7 @@ void
 STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
     using namespace std;
-    size_t DEBUG = 0;
+    size_t DEBUG = 1;
     cout.precision(4);
     const reco::Candidate * final_state[FSSIZE];
     for (size_t i = 0; i<FSSIZE; i++) final_state[i] = NULL;
@@ -46,7 +46,7 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
         const reco::Candidate & p = (*genParticles)[i];
         int id = p.pdgId();
         if (id == 21) continue; // skip gluons  
-         
+        if (i<10) {cout << i << " "; printCandidate(p);}
         if (p.numberOfMothers() == 2 && i < 10) {
             if (abs(id) == 6 ){
                 if ( final_state[HSTOPF] == NULL ) {
@@ -62,7 +62,7 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
             }else {
                 if (final_state[HSRECOIL] == NULL) {
                     final_state[HSRECOIL] = & p;
-                    if (DEBUG) printCandidate(p);
+                    if (DEBUG) cout << "Recoil:"; printCandidate(p);
                 }
             }
         }
@@ -129,7 +129,6 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
             }
         }
     }    
-    
     // Make sure all final state particles have been found
     assert(final_state[HSTOPF] !=NULL && final_state[HSB] !=NULL && final_state[HSRECOIL] !=NULL
             && final_state[TOPB]!=NULL && final_state[TOPWF] !=NULL
@@ -184,16 +183,75 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
        */
     }
     
-    
-       /*
+        
+   cout << "Event has " << genJets->size() << "gen jets\n";
+   //printCandidate(*final_state[HSRECOIL]);
+   const reco::Candidate * tp;
+   float nTOPB[MAXGENJETS], nHSRECOIL[MAXGENJETS];
    for(size_t i = 0; i < genJets->size(); ++ i) {
+        assert(genJets->size() < MAXGENJETS); // just in case
         const reco::GenJet & gj = (*genJets)[i];
         //genJetConstituents=gj.getGenConstituents();
-        vector<const reco::Candidate*> theJetConstituents = gj.getGenConstituents();
-        if (i==0) cout << theJetConstituents.size() << endl;
+        vector<const reco::GenParticle*> jetConstituents = gj.getGenConstituents();
+        cout << "Jet #" << i << " has " << jetConstituents.size() << " constituents" << " (eta=" << gj.eta() << ", pt=" << gj.pt() << ")" << endl;
+        //if (i>2)break;
+        nTOPB[i]=0; // initialize
+        nHSRECOIL[i]=0.;
+        string marker="";
+        //cout << "Will find " << 
+        // loop over jet constituents
+        for (size_t j=0; j<jetConstituents.size(); j++){
+            //nHSTOPF=nHSB=nHSRECOIL=0;
+            
+            const reco::GenParticle * gp = jetConstituents[j];
+            tp=gp->mother();
+            
+            cout << "   Constituent #" << j
+                 << ": Seeking " << pdg::particleName(final_state[HSRECOIL]->pdgId()) << " and " << pdg::particleName(final_state[TOPB]->pdgId())
+                 << endl << "   ";
+            //if( final_state[HSRECOIL]->pdgId() == gp->pdgId())
+                //cout << j << " " << pdg::particleName(gp->pdgId()) << endl;
+                if (tp == final_state[TOPB]) {nTOPB[i]++;} else
+                if (tp == final_state[HSRECOIL]) {nHSRECOIL[i]++;}
+                while (true){
+                    marker="";
+                    tp=tp->mother();
+                    if (!tp) {break;}
+                    if (tp == final_state[TOPB]) {nTOPB[i]++; marker= "@";} else
+                    if (tp == final_state[HSRECOIL]) {nHSRECOIL[i]++; marker= "@";}//else
+                    //if (tp->pdgId() == final_state[HSRECOIL]->pdgId() && tp->mother()->pdgId() == 2212){ cout << endl; printCandidate(*tp); printCandidate(*final_state[HSRECOIL]);}
+                    cout << " <- " << marker << pdg::particleName(tp->pdgId());
+
+                }
+                cout << endl;
+        }
+        
+        // normalize counters
+        nTOPB[i] /= jetConstituents.size();
+        nHSRECOIL[i] /= jetConstituents.size();
+        
+        //cout << "Jet #" << i << ": " << " from b:" << nTOPB[i] << ", from light quark:" << nHSRECOIL[i] << endl;
    }
-   */
-    
+    // Find the best matches
+    float max_nTOPB=-1, max_nHSRECOIL=-1;
+    size_t i_TOPB=-1, i_HSRECOIL=-1;
+    for (size_t i=0; i<genJets->size(); i++){
+        if (nTOPB[i] > max_nTOPB) {max_nTOPB=nTOPB[i]; i_TOPB=i;};
+        if (nHSRECOIL[i] > max_nHSRECOIL) {max_nHSRECOIL=nHSRECOIL[i]; i_HSRECOIL=i;};
+    }
+    cout << "Best matches: Jet #" << i_TOPB << ": from b:" << max_nTOPB << endl;
+    cout << "              Jet #" << i_HSRECOIL << ": from light quark:" << max_nHSRECOIL << endl;
+    if (max_nHSRECOIL==0) {cout << "Recoil jet not found in gen jets:\n"; printCandidate(*final_state[HSRECOIL]);}
+    assert(max_nHSRECOIL>0);
+    if (max_nTOPB == 0){
+        for (size_t j=0; j<genJets->size(); j++) cout << nTOPB[j] << endl;
+        i_TOPB=-1;
+    }
+    if (max_nHSRECOIL == 0){
+        for (size_t j=0; j<genJets->size(); j++) cout << nHSRECOIL[j] << endl;
+        i_HSRECOIL=-2;
+    }
+    assert(i_TOPB != i_HSRECOIL); // that wouldn't be good 
     
     // fiducial volume
     if(   final_state[WL]->pt() > 20
