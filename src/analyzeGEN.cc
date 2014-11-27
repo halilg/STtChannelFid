@@ -25,7 +25,6 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
     iEvent.getByLabel("ak5GenJets", genJets);
     
     size_t ngenjets=genJets->size();
-    //size_t ngenjconst=genJetConstituents.size();
     
     double ETMiss2 = -1;
     iEvent.getByLabel("genMetTrue", genMETs);
@@ -190,12 +189,12 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
    //bool debugJetMatching=true;
    bool debugJetMatching=false;        
    if (debugJetMatching) cout << "Event has " << genJets->size() << "gen jets\n";
-   //printCandidate(*final_state[HSRECOIL]);
    const reco::Candidate * tp;
 
+   assert(genJets->size() < MAXGENJETS); // just in case
    float nTOPB[MAXGENJETS], nHSRECOIL[MAXGENJETS];
+
    for(size_t i = 0; i < genJets->size(); ++ i) {
-        assert(genJets->size() < MAXGENJETS); // just in case
         const reco::GenJet & gj = (*genJets)[i];
         vector<const reco::GenParticle*> jetConstituents = gj.getGenConstituents();
         if (debugJetMatching) cout << "Jet #" << i << " has " << jetConstituents.size() << " constituents" << " (eta=" << gj.eta() << ", pt=" << gj.pt() << ")" << endl;
@@ -203,10 +202,8 @@ STtChannelFid::analyzeGEN(const edm::Event& iEvent, const edm::EventSetup& iSetu
         nTOPB[i]=0; // initialize
         nHSRECOIL[i]=0.;
         string marker="";
-        //cout << "Will find " << 
         // loop over jet constituents
         for (size_t j=0; j<jetConstituents.size(); j++){
-            //nHSTOPF=nHSB=nHSRECOIL=0;
             const reco::GenParticle * gp = jetConstituents[j];
             tp=gp->mother();
             

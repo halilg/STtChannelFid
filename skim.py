@@ -1,5 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
+#CMSSW configuration file to skim aMC@NLO t-channel data
+
 dpathi="root://xrootd.unl.edu//store/mc/Summer12_DR53X/TToLeptons_t-channel_Pythia8_8TeV-aMCatNLO/AODSIM/PU_S10_START53_V19-v1/00000/"
 #dpatho="/tmp/halil/"
 dpatho="/afs/cern.ch/user/h/halil/st/"

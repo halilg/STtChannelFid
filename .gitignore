@@ -43,6 +43,7 @@ Thumbs.db
 *.png
 *.pdf
 *.root
+*.pyc
 MC
 cmsdata
 

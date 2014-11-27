@@ -1,5 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
+# CMSSW configuration file to calculate the fiducial volume
+
 #dpath="/afs/cern.ch/user/h/halil/scratch0/st/"
 dpath="/afs/cern.ch/user/h/halil/st/"
 ifile1="skim_008F0604-84F2-E311-863F-00266CF9B630.root" #skim_007E248B-54F2-E311-A601-848F69FD4586.root"
