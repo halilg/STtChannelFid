@@ -41,4 +41,7 @@ void STtChannelFid::book_histograms(){
     histosF["ltBdeltaphi"] = fs->make<TH1F>("ltBdeltaphi","Last Top - B Delta Phi; Delta Phi (rad);Events",50,0,5);
     histosF["lepCutPt"] = fs->make<TH1F>("lepCutPt","lepCutPt; P\\_{t};Events",250,0,500);
     histosF["lepCutEta"] = fs->make<TH1F>("lepCutEta","lepCutEta; #eta ;Events",160,-8,8);
+    
+    histosF["genJMr"] = fs->make<TH1F>("genJMr","Recoil jet - Gen jet match constituent fraction; Fraction ; Jets",30,0,1);
+    histosF["genJMb"] = fs->make<TH1F>("genJMb","b-jet - Gen jet match constituent fraction; Fraction ; Jets",30,0,1);
 }

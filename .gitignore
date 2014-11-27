@@ -25,7 +25,6 @@
 *.log
 *.sql
 *.sqlite
-*.root
  
 # OS generated files #
 ######################
@@ -36,3 +35,14 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Custom files and directories#
+# ######################
+*.bak
+*.old
+*.png
+*.pdf
+*.root
+MC
+cmsdata
+

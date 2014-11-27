@@ -24,7 +24,7 @@
 //#include "DataFormats/Candidate/interface/Particle.h"
 #include "TopPhysics/STtChannelFid/interface/pdg.h"
 
-#define MAXGENJETS 50
+#define MAXGENJETS 75
 
 
 void printCandidate(const reco::Candidate &);
